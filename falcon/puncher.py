@@ -73,11 +73,6 @@ def draw_grid(draw, beats, box, y0):
     h = beat_height
     l = len(box.notes)
     w = (card_width - margin_left - margin_right) / float(l - 1)
-    # Draw vertical lines, first and last thicker
-    for i in xrange(l):
-        t = 3 if (i == 0 or i == l - 1) else 1
-        draw.line([(margin_left + i * w, y0),
-                   (margin_left + i * w, y0 + beats * h)], fill="black", width=adjust(t))
     y = 0
     # Draw half-beat horizontal lines
     for i in xrange(beats):
@@ -85,14 +80,23 @@ def draw_grid(draw, beats, box, y0):
         draw.line([(margin_left, y + h / 2),
                    (card_width - margin_left, y + h / 2)], fill="black", width=adjust(1))
     # Make half-beat lines dashed by drawing thick vertical white lines over
-    for i in xrange(l - 1):
+    for i in xrange(2, l - 1, 3):
         draw.line([(margin_left + i * w + w / 2, y0),
-                   (margin_left + i * w + w / 2, y0 + beats * h)], fill="white", width=adjust(10))
+                   (margin_left + i * w + w / 2, y0 + beats * h)], fill="white", width=int(w))
+    # Draw vertical lines, first and last thicker
+    for i in xrange(l):
+        t = 3 if (i == 0 or i == l - 1) else 1
+        draw.line([(margin_left + i * w, y0),
+                   (margin_left + i * w, y0 + beats * h)], fill="black", width=adjust(t))
     # Draw full-beat lines
     for i in xrange(beats + 1):
         y = y0 + h * i
+        size = font_small.getsize(str(i))
         draw.line([(margin_left, y),
                    (card_width - margin_left, y)], fill="black", width=adjust(3))
+        # Beat numbers in margin
+        draw.text((margin_left - size[0] - adjust(20), y - size[1] / 2 - adjust(8)), str(i), "gray", font_small)
+        draw.text((card_width - margin_left + adjust(20), y - size[1] / 2 - adjust(8)), str(i), "gray", font_small)
 
     return y
 
