@@ -1,4 +1,5 @@
 .idea
 *.png
 *.mid
+*.iml
 !lullaby.*
