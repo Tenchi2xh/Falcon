@@ -2,6 +2,6 @@
 *.png
 *.mid
 *.iml
-!lullaby.*
+!lullaby*
 *.pyc
 .DS_Store
