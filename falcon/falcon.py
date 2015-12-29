@@ -8,7 +8,7 @@ from puncher import punch
 from boxes import *
 
 basename = "lullaby"
-box = GI15
+box = GI30
 
 
 def main(midi_file="%s.mid" % basename):
