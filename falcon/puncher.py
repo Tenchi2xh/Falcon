@@ -17,12 +17,25 @@ def adjust(n):
     return int(n * ratio)
 
 
-margin_left = margin_right = adjust(75)
+margin_left = margin_right = adjust(85)
 beat_height = adjust(100)
 punch_radius = adjust(10)
 
 font = ImageFont.truetype("resources/OpenSans-CondLight.ttf", adjust(64))
 font_small = ImageFont.truetype("resources/OpenSans-CondLight.ttf", adjust(36))
+
+
+def draw_title(draw, basename, box, y0):
+    title = "%s.mid" % basename
+    subtitle = "Arranged for the %s" % box.name
+
+    size_title = font.getsize(title)
+    size_subtitle = font_small.getsize(subtitle)
+    x0_title = (card_width - size_title[0]) / 2
+    x0_subtitle = (card_width - size_subtitle[0]) / 2
+
+    draw.text((x0_title, y0), title, "black", font)
+    draw.text((x0_subtitle, y0 + size_title[1] + adjust(20)), subtitle, "black", font_small)
 
 
 def draw_labels(draw, box, y0):
@@ -108,6 +121,7 @@ def punch(filename, tracks, box):
     im = Image.new("RGB", (card_width, adjust(800) + beats(tracks) * beat_height), "white")
     draw = ImageDraw.Draw(im)
 
+    draw_title(draw, filename, box, y0=adjust(250))
     draw_labels(draw, box, y0=adjust(400))
     draw_arrow(draw, y0=adjust(100), x0=adjust(920), w=adjust(48), h=adjust(256))
     y1 = draw_grid(draw, beats(tracks), box, y0=adjust(600))
@@ -116,5 +130,5 @@ def punch(filename, tracks, box):
     for track in tracks:
         draw_track(draw, track, float(tracks.resolution), box, y0=adjust(600))
 
-    im.rotate(90, expand=True).save("%s.png" % filename)
+    im.rotate(90, expand=True).save("%s_%s.png" % (filename, box.symbol))
 

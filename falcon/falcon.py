@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 
 import midi
-from midi.constants import *
 
 from util import *
 from puncher import punch
@@ -43,6 +42,6 @@ def main(midi_file="%s.mid" % basename):
         closest = box.closest(note.pitch + transpose)
         note.set_pitch(closest)
 
-    midi.write_midifile("%s_%s.mid" % (basename, box.name), tracks)
+    midi.write_midifile("%s_%s.mid" % (basename, box.symbol), tracks)
 
-    punch("%s_%s" % (basename, box.name), tracks, box)
+    punch(basename, tracks, box)

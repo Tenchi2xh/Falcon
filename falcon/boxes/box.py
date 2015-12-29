@@ -7,6 +7,13 @@ class MusicBox(object):
     __metaclass__ = ABCMeta
 
     @abstractproperty
+    def symbol(self):
+        """
+        Name of the music box
+        """
+        return
+
+    @abstractproperty
     def name(self):
         """
         Name of the music box
