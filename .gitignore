@@ -3,3 +3,5 @@
 *.mid
 *.iml
 !lullaby.*
+*.pyc
+.DS_Store
