@@ -7,6 +7,13 @@ class MusicBox(object):
     __metaclass__ = ABCMeta
 
     @abstractproperty
+    def name(self):
+        """
+        Name of the music box
+        """
+        return
+
+    @abstractproperty
     def notes(self):
         """
         List of the pitch values of the notes supported by the music box
@@ -39,6 +46,8 @@ class MusicBox(object):
         Returns the closest matching note in the music box
         """
         available = filter(lambda n: (n % 12) == (pitch % 12), self.notes)
+        if not available:
+            return self.closest(pitch + 1)
         return min(available, key=lambda n: abs(n - pitch))
 
     def reproducible(self, pitches):

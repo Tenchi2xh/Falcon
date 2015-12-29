@@ -1,7 +1,5 @@
-.idea
-*.png
-*.mid
+.idea/
+tmp/
 *.iml
-!lullaby*
 *.pyc
 .DS_Store

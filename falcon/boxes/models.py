@@ -9,6 +9,9 @@ class GrandIllusions30Notes(MusicBox):
     """
     http://www.grand-illusions.com/acatalog/30-Note-Music-Box-Set-554.html
     """
+    @property
+    def name(self):
+        return "GI30"
 
     @property
     def notes(self):
@@ -30,3 +33,47 @@ class GrandIllusions30Notes(MusicBox):
             "C2", "C#2", "D2", "D#2", "E2", "F2", "F#2", "G2", "G#2", "A2", "A#2", "B2",
             "C3", "D3", "E3"
         ]
+
+
+class GrandIllusionsLarge(MusicBox):
+    """
+    http://www.grand-illusions.com/acatalog/Large_Music_Box_Set.html
+    """
+    @property
+    def name(self):
+        return "GI20"
+
+    @property
+    def notes(self):
+        # Notes reported on punch card
+        return [
+            C_4, D_4, E_4, F_4, G_4, A_4, B_4,
+            C_5, D_5, E_5, F_5, G_5, A_5, B_5,
+            C_6, D_6, E_6, F_6, G_6, A_6
+        ]
+
+    @property
+    def labels(self):
+        return (["C", "D", "E", "F", "G", "A", "B"] * 3)[:-1]
+
+
+class GrandIllusionsSmall(MusicBox):
+    """
+    http://www.grand-illusions.com/acatalog/Music_Box_Set.html
+    """
+    @property
+    def name(self):
+        return "GI15"
+
+    @property
+    def notes(self):
+        # Notes reported on punch card
+        return [
+            C_4, D_4, E_4, F_4, G_4, A_4, B_4,
+            C_5, D_5, E_5, F_5, G_5, A_5, B_5,
+            C_6
+        ]
+
+    @property
+    def labels(self):
+        return (["C", "D", "E", "F", "G", "A", "B"] * 2) + ["C"]

@@ -1,5 +1,7 @@
-from models import GrandIllusions30Notes
+from models import *
 
-__all__ = ["grand_illusion_30_notes"]
+__all__ = ["GI30", "GI20", "GI15"]
 
-grand_illusion_30_notes = GrandIllusions30Notes()
+GI30 = GrandIllusions30Notes()
+GI20 = GrandIllusionsLarge()
+GI15 = GrandIllusionsSmall()

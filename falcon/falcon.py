@@ -8,7 +8,7 @@ from puncher import punch
 from boxes import *
 
 basename = "lullaby"
-box = grand_illusion_30_notes
+box = GI15
 
 
 def main(midi_file="%s.mid" % basename):
@@ -28,22 +28,21 @@ def main(midi_file="%s.mid" % basename):
     print "Total of %d notes" % len(all_notes_on)
     print "Song is %d beats long" % beats(tracks)
 
-    transpose = 0
-    best_distance = 1000
+    all_distances = []
 
     for key in xrange(-48, 49):
         pitches = map(lambda note: note.pitch + key, all_notes_on)
         distances = map(box.distance, pitches)
         average_distance = sum(distances) / len(pitches)
-        if average_distance < best_distance:
-            best_distance = average_distance
-            transpose = key
+        all_distances.append((average_distance, key))
+
+    best_distance, transpose = min(all_distances, key=lambda t: t[0])
 
     print "Best distance %f with transpose key %d, transposing" % (best_distance, transpose)
     for note in all_notes_on + all_notes_off:
         closest = box.closest(note.pitch + transpose)
         note.set_pitch(closest)
 
-    midi.write_midifile("%s_transposed.mid" % basename, tracks)
+    midi.write_midifile("%s_%s.mid" % (basename, box.name), tracks)
 
-    punch(basename, tracks, box)
+    punch("%s_%s" % (basename, box.name), tracks, box)
