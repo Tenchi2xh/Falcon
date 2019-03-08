@@ -112,7 +112,7 @@ def draw_track(draw, track, resolution, box, y0):
 
     for event in track:
         t += event.tick
-        if event.is_event(midi.events.NoteOnEvent.statusmsg):
+        if event.is_event(midi.events.NoteOnEvent.statusmsg) and event.velocity > 0:
             y = h * (t / resolution)
             x = offsets[event.pitch] * w
             draw.ellipse([(margin_left - r + x, y0 + y - r), (margin_left + r + x, y0 + y + r)], fill="black")
