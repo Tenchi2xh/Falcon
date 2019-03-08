@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "falcon"
+version = "2.0.0"
+description = "MIDI to music box punch card converter"
+authors = ["Hamza Haiken <tenchi@team2xh.net>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/Tenchi2xh/Falcon"
+keywords = ["music", "box", "midi"]
+
+[tool.poetry.scripts]
+falcon = "falcon.cli:falcon"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+click = "^6.7"
+Pillow = "^5.2"
+mido = "^1.2"
+
+[tool.poetry.dev-dependencies]
+ptpython = "^0.41.0"
+flake8 = "^3.5"
