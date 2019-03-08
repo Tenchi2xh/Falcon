@@ -3,3 +3,5 @@ tmp/
 *.iml
 *.pyc
 .DS_Store
+*.mid
+*.png
