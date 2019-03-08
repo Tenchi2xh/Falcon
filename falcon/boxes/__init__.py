@@ -8,7 +8,7 @@ for n in range(128):
     globals()["%s_%d" % (name, octave)] = n
 
 
-GrandIllusions30Notes = MusicBox(
+GI30 = MusicBox(
     symbol="GI30",
     name="Grand Illusions 30 Notes Music Box",
     notes=[n + 53 for n in [  # C1 on the music box is actually an F4, so we add 53
@@ -25,7 +25,7 @@ GrandIllusions30Notes = MusicBox(
     ]
 )
 
-GrandIllusionsLarge = MusicBox(
+GI20 = MusicBox(
     symbol="GI20",
     name="Grand Illusions Large Music Box",
     notes=[
@@ -36,7 +36,7 @@ GrandIllusionsLarge = MusicBox(
     labels=(["C", "D", "E", "F", "G", "A", "B"] * 3)[:-1]
 )
 
-GrandIllusionsSmall = MusicBox(
+GI15 = MusicBox(
     symbol="GI15",
     name="Grand Illusions Music Box",
     notes=[

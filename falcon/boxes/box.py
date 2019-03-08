@@ -26,7 +26,7 @@ class MusicBox:
         """
         Returns the closest matching note in the music box
         """
-        available = filter(lambda n: (n % 12) == (pitch % 12), self.notes)
+        available = [n for n in self.notes if (n % 12) == (pitch % 12)]
         if not available:
             return self.closest(pitch + 1)
         return min(available, key=lambda n: abs(n - pitch))
