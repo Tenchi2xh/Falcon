@@ -1,4 +1,4 @@
-from .cli import falcon
+from .cli import cli
 
 if __name__ == "__main__":
-    falcon()
+    cli()

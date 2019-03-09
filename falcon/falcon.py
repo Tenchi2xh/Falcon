@@ -5,15 +5,10 @@ from mido import MidiFile
 
 from .boxes import GI15, GI20, GI30
 from .midi import length, beats
+from .punch import punch
 
 
-# TODO:
-# - separate in functions
-# - add a debug param
-
-
-def falcon(midi_file_path):
-    box = GI30  # FIXME
+def falcon(midi_file_path, box):
     basename = os.path.basename(os.path.splitext(midi_file_path)[0])
 
     click.echo("Reading MIDI file %s" % midi_file_path)
@@ -48,5 +43,7 @@ def falcon(midi_file_path):
     for note in all_notes_on + all_notes_off:
         closest = box.closest(note.note + transpose)
         note.note = closest
+
+    punch(basename, mid, GI30, 300)
 
     mid.save("%s_%s.mid" % (basename, box.symbol))
