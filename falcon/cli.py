@@ -6,7 +6,6 @@ from .punch import punch
 from .boxes import boxes
 
 
-
 @click.command()
 @click.option("-d", "--dpi", type=click.IntRange(min=1), default=300)
 @click.option("-b", "--box", type=click.Choice(boxes.keys()), required=True)

@@ -1,6 +1,7 @@
 from typing import List
 from dataclasses import dataclass
 
+
 @dataclass
 class MusicBox:
     symbol: str
@@ -17,7 +18,8 @@ class MusicBox:
 
     def distance(self, pitch):
         """
-        Returns the distance in octaves from the given pitch to the closest matching note in the music box
+        Returns the distance in octaves from the given pitch
+        to the closest matching note in the music box
         """
         closest = self.closest(pitch)
         return abs(closest - pitch) / 12.0
@@ -33,6 +35,7 @@ class MusicBox:
 
     def reproducible(self, pitches):
         """
-        Returns true if the given list of pitches are reproducible with the music box
+        Returns true if the given list of pitches
+        are reproducible with the music box
         """
         return all(pitch % 12 in self.scale for pitch in pitches)

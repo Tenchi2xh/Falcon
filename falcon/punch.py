@@ -72,8 +72,14 @@ def punch(basename, mid, box, dpi, supersampling=2, angle=90, verbose=False):
     )
     ctx.draw = ImageDraw.Draw(ctx.image)
 
-    ctx.font = ImageFont.truetype(pkg_resources.resource_filename(__name__, "OpenSans-CondLight.ttf"), int(c(5)))
-    ctx.font_small = ImageFont.truetype(pkg_resources.resource_filename(__name__, "OpenSans-CondLight.ttf"), int(c(2)))
+    ctx.font = ImageFont.truetype(
+        pkg_resources.resource_filename(__name__, "OpenSans-CondLight.ttf"),
+        size=int(c(5))
+    )
+    ctx.font_small = ImageFont.truetype(
+        pkg_resources.resource_filename(__name__, "OpenSans-CondLight.ttf"),
+        size=int(c(2))
+    )
 
     echo("Generating image...")
     draw_title(ctx, title=basename)  # TODO: Find a title in midi metadata
@@ -87,11 +93,17 @@ def punch(basename, mid, box, dpi, supersampling=2, angle=90, verbose=False):
     echo("Post-processing image...")
     (ctx.image
         .resize(
-            (ctx.image.size[0] // supersampling, ctx.image.size[1] // supersampling),
+            (
+                ctx.image.size[0] // supersampling,
+                ctx.image.size[1] // supersampling
+            ),
             Image.LANCZOS
         )
         .rotate(angle, expand=True)
-        .save("%s_%s.png" % (basename, box.symbol), dpi=(original_dpi, original_dpi))
+        .save(
+            "%s_%s.png" % (basename, box.symbol),
+            dpi=(original_dpi, original_dpi)
+        )
     )
 
 
@@ -122,17 +134,29 @@ def draw_labels(ctx, bottom=False):
         y0 = ctx.image.size[1] - ctx.cd("margins", "footer") + dy1 * 2
 
     for i, label in enumerate(ctx.box.labels):
-        elements = label if len(label) == 3 else [label[0], "", label[1]] if len(label) == 2 else [label[0], "", ""]
+        if len(label) == 3:
+            elements = label
+        elif len(label) == 2:
+            elements = [label[0], "", label[1]]
+        else:
+            elements = [label[0], "", ""]
 
         x = x0 + i * dx - (ctx.font.getsize(elements[0])[0] / 2)
-        dy = dy0 if (i % 2 == 0 and len(ctx.box.labels) > 20) else dy1  # FIXME: have flag in box for 1 or 2 rows
+        # FIXME: have flag in box for 1 or 2 rows
+        dy = dy0 if (i % 2 == 0 and len(ctx.box.labels) > 20) else dy1
         y = y0 - dy - fh
 
         ctx.draw.text((x, y), elements[0], "black", ctx.font)
 
         letter_width = ctx.font.getsize(elements[0])[0]
-        ctx.draw.text((x + letter_width, y + ctx.c(3.5)), elements[2], "black", ctx.font_small)
-        ctx.draw.text((x - ctx.c(0.5), y), elements[1], "black", ctx.font_small)
+        ctx.draw.text(
+            (x + letter_width, y + ctx.c(3.5)),
+            elements[2], "black", ctx.font_small
+        )
+        ctx.draw.text(
+            (x - ctx.c(0.5), y),
+            elements[1], "black", ctx.font_small
+        )
 
 
 def draw_arrow(ctx):
@@ -188,7 +212,8 @@ def draw_grid(ctx, mid):
             width=weight
         )
 
-    # Make half-beat lines appear dashed by drawing thick vertical white lines on top
+    # Make half-beat lines appear dashed by drawing
+    # thick vertical white lines on top.
     # Dash length is 2 pitches, and spacing should make
     # the dash perfectly align every 4 dashes, so 0.75
     # Pattern on the original sheet starts from the right side
@@ -227,7 +252,7 @@ def draw_grid(ctx, mid):
             fill="black",
             width=weight
         )
-        # Beat numbers
+        # Beat numbers
         text = str(i + 1)
         font_size = ctx.font_small.getsize(text)
         xs = (
@@ -250,7 +275,10 @@ def draw_track(ctx, mid, track):
     margin_top = ctx.cd("margins", "header")
     radius = ctx.cd("grid", "hole") / 2
 
-    pitch_offsets = {pitch: i * pitch_width for i, pitch in enumerate(ctx.box.notes)}
+    pitch_offsets = {
+        pitch: i * pitch_width
+        for i, pitch in enumerate(ctx.box.notes)
+    }
 
     t = 0
     for note in track:

@@ -1,11 +1,7 @@
-import os
-import mido
 import click
 from mido import MidiFile
 
-from .boxes import GI15, GI20, GI30
-from .midi import length, beats
-from .punch import punch
+from .midi import beats
 
 
 def falcon(midi_file, box, verbose=False):
@@ -54,5 +50,8 @@ def compute_transpose(notes_on, box, echo):
         all_distances.append((average_distance, key))
 
     best_distance, transpose = min(all_distances, key=lambda t: t[0])
-    echo("Best distance %f with transposition key %d, transposing..." % (best_distance, transpose))
+    echo(
+        "Best distance %f with transposition key %d, transposing..."
+        % (best_distance, transpose)
+    )
     return transpose

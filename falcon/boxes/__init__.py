@@ -1,3 +1,5 @@
+# flake8: noqa
+
 from .box import MusicBox
 
 NOTE_NAMES = ["C", "Cs", "D", "Ds", "E", "F", "Fs", "G", "Gs", "A", "As", "B"]
