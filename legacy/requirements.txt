@@ -1,2 +1,0 @@
-Pillow
-https://github.com/vishnubob/python-midi/archive/v0.2.3.zip
