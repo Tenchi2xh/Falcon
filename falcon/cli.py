@@ -26,7 +26,8 @@ def cli(dpi, box, supersampling, verbose, no_midi, horizontal, midi_file):
         box=box,
         dpi=dpi,
         supersampling=supersampling,
-        angle=90 if horizontal else 0
+        angle=90 if horizontal else 0,
+        verbose=verbose
     )
 
     if not no_midi:

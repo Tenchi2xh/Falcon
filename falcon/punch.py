@@ -1,3 +1,4 @@
+import click
 import types
 import pkg_resources
 from PIL import Image, ImageDraw, ImageFont
@@ -36,7 +37,10 @@ dimensions = {
 }
 
 
-def punch(basename, mid, box, dpi, supersampling=2, angle=90):
+def punch(basename, mid, box, dpi, supersampling=2, angle=90, verbose=False):
+    echo = click.echo if verbose else lambda x: None
+
+    original_dpi = dpi
     dpi *= supersampling
     ctx = types.SimpleNamespace()
     # FIXME: ctx.dimensions = box.dimensions
@@ -71,6 +75,7 @@ def punch(basename, mid, box, dpi, supersampling=2, angle=90):
     ctx.font = ImageFont.truetype(pkg_resources.resource_filename(__name__, "OpenSans-CondLight.ttf"), int(c(5)))
     ctx.font_small = ImageFont.truetype(pkg_resources.resource_filename(__name__, "OpenSans-CondLight.ttf"), int(c(2)))
 
+    echo("Generating image...")
     draw_title(ctx, title=basename)  # TODO: Find a title in midi metadata
     draw_labels(ctx)
     draw_labels(ctx, bottom=True)
@@ -79,13 +84,14 @@ def punch(basename, mid, box, dpi, supersampling=2, angle=90):
     for track in mid.tracks:
         draw_track(ctx, mid, track)
 
+    echo("Post-processing image...")
     (ctx.image
         .resize(
             (ctx.image.size[0] // supersampling, ctx.image.size[1] // supersampling),
             Image.LANCZOS
         )
         .rotate(angle, expand=True)
-        .save("%s_%s.png" % (basename, box.symbol), dpi=(dpi, dpi))
+        .save("%s_%s.png" % (basename, box.symbol), dpi=(original_dpi, original_dpi))
     )
 
 
