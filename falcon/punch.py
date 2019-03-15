@@ -36,10 +36,10 @@ dimensions = {
 }
 
 
-def punch(basename, mid, box, dpi, super_sample=1):
-    dpi *= super_sample
+def punch(basename, mid, box, dpi, supersampling=2, angle=90):
+    dpi *= supersampling
     ctx = types.SimpleNamespace()
-    # ctx.dimensions = box.dimensions
+    # FIXME: ctx.dimensions = box.dimensions
     ctx.dimensions = dimensions
     ctx.box = box
 
@@ -81,10 +81,10 @@ def punch(basename, mid, box, dpi, super_sample=1):
 
     (ctx.image
         .resize(
-            (ctx.image.size[0] // super_sample, ctx.image.size[1] // super_sample),
+            (ctx.image.size[0] // supersampling, ctx.image.size[1] // supersampling),
             Image.LANCZOS
         )
-        #.rotate(90, expand=True)
+        .rotate(angle, expand=True)
         .save("%s_%s.png" % (basename, box.symbol), dpi=(dpi, dpi))
     )
 

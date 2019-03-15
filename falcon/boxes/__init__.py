@@ -46,3 +46,5 @@ GI15 = MusicBox(
     ],
     labels=(["C", "D", "E", "F", "G", "A", "B"] * 2) + ["C"]
 )
+
+boxes = {box.symbol: box for box in [GI30, GI20, GI15]}
