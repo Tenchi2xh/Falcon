@@ -18,7 +18,7 @@ dimensions = {
     "grid": {
         "beat": 8,
         "pitch": 2,
-        "hole": 2
+        "hole": 1.8
     },
     "offsets": {
         "top_to_title": 15,
@@ -245,6 +245,7 @@ def draw_grid(ctx, mid):
         )
 
     # Draw beat horizontal lines
+    ascent, descent = ctx.font_small.getmetrics()
     for i in range(n_beats + 1):
         y = margin_top + i * beat_height
         ctx.draw.line(
@@ -254,10 +255,11 @@ def draw_grid(ctx, mid):
         )
         # Beat numbers
         text = str(i + 1)
-        font_size = ctx.font_small.getsize(text)
+        font_size = list(ctx.font_small.getsize(text))
+        font_size[1] += descent
         xs = (
-            margin_left - font_size[0] - pitch_width / 2,
-            margin_left + grid_width + pitch_width / 2
+            margin_left - font_size[0] - 2 * pitch_width / 3,
+            margin_left + grid_width + 2 * pitch_width / 3
         )
         for x in xs:
             ctx.draw.text(
