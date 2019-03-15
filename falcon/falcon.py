@@ -1,11 +1,13 @@
 import click
-from mido import MidiFile
+from typing import Any, List, Tuple
+from mido import MidiFile, MetaMessage as Note  # type: ignore
 
+from .boxes.box import MusicBox
 from .midi import beats
 
 
-def falcon(midi_file, box, verbose=False):
-    echo = click.echo if verbose else lambda x: None
+def falcon(midi_file: str, box: MusicBox, verbose=False) -> MidiFile:
+    echo: Any = click.echo if verbose else lambda x: None  # type: ignore
 
     echo("Reading MIDI file %s" % midi_file)
     mid = MidiFile(midi_file)
@@ -25,7 +27,7 @@ def falcon(midi_file, box, verbose=False):
     return mid
 
 
-def get_notes(tracks, echo):
+def get_notes(tracks: List[List[Note]], echo) -> Tuple[List[Note], List[Note]]:
     notes_on = []
     notes_off = []
 
@@ -40,7 +42,7 @@ def get_notes(tracks, echo):
     return notes_on, notes_off
 
 
-def compute_transpose(notes_on, box, echo):
+def compute_transpose(notes_on: List[Note], box: MusicBox, echo) -> int:
     all_distances = []
 
     for key in range(-48, 49):

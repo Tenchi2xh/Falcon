@@ -1,5 +1,6 @@
 .venv/
 .idea/
+.mypy_cache/
 tmp/
 *.iml
 *.pyc

@@ -1,9 +1,11 @@
 import click
 import types
 import pkg_resources
-from PIL import Image, ImageDraw, ImageFont
+from mido import MidiFile  # type: ignore
+from PIL import Image, ImageDraw, ImageFont  # type: ignore
 
 from .midi import beats
+from .boxes.box import MusicBox
 
 dimensions = {
     "card": {
@@ -37,49 +39,20 @@ dimensions = {
 }
 
 
-def punch(basename, mid, box, dpi, supersampling=2, angle=90, verbose=False):
-    echo = click.echo if verbose else lambda x: None
+def punch(basename: str,
+          mid: MidiFile,
+          box: MusicBox,
+          dpi: int,
+          supersampling: int=2,
+          angle: int=90,
+          verbose=False):
+
+    echo: Any = click.echo if verbose else lambda x: None  # type: ignore
 
     original_dpi = dpi
     dpi *= supersampling
-    ctx = types.SimpleNamespace()
-    # FIXME: ctx.dimensions = box.dimensions
-    ctx.dimensions = dimensions
-    ctx.box = box
 
-    def c(mm):
-        """milimeters -> pixels"""
-        return (mm * dpi) / 25.4
-
-    def cd(*args, d=dimensions):
-        """dimensions -> pixels"""
-        return cd(*args[1:], d=d[args[0]]) if len(args) > 1 else c(d[args[0]])
-
-    ctx.c = c
-    ctx.cd = cd
-
-    ctx.image = Image.new(
-        mode="RGB",
-        size=(
-            int(cd("card", "width")),
-            int(
-                cd("margins", "header")
-                + beats(mid) * cd("grid", "beat")
-                + cd("margins", "footer")
-            )
-        ),
-        color="white"
-    )
-    ctx.draw = ImageDraw.Draw(ctx.image)
-
-    ctx.font = ImageFont.truetype(
-        pkg_resources.resource_filename(__name__, "OpenSans-CondLight.ttf"),
-        size=int(c(5))
-    )
-    ctx.font_small = ImageFont.truetype(
-        pkg_resources.resource_filename(__name__, "OpenSans-CondLight.ttf"),
-        size=int(c(2))
-    )
+    ctx = init_ctx(mid, box, dpi)
 
     echo("Generating image...")
     draw_title(ctx, title=basename)  # TODO: Find a title in midi metadata
@@ -105,6 +78,47 @@ def punch(basename, mid, box, dpi, supersampling=2, angle=90, verbose=False):
             dpi=(original_dpi, original_dpi)
         )
     )
+
+
+def init_ctx(mid, box, dpi):
+    ctx = types.SimpleNamespace()
+
+    def c(mm: float) -> float:
+        """milimeters -> pixels"""
+        return (mm * dpi) / 25.4
+
+    def cd(*args: str, d=dimensions) -> float:
+        """dimensions -> pixels"""
+        return cd(*args[1:], d=d[args[0]]) if len(args) > 1 else c(d[args[0]])
+
+    ctx.c = c
+    ctx.cd = cd
+    # FIXME: ctx.dimensions = box.dimensions
+    ctx.dimensions = dimensions
+    ctx.box = box
+    ctx.image = Image.new(
+        mode="RGB",
+        size=(
+            int(cd("card", "width")),
+            int(
+                cd("margins", "header")
+                + beats(mid) * cd("grid", "beat")
+                + cd("margins", "footer")
+            )
+        ),
+        color="white"
+    )
+    ctx.draw = ImageDraw.Draw(ctx.image)
+    ctx.font = ImageFont.truetype(
+        pkg_resources.resource_filename(__name__, "OpenSans-CondLight.ttf"),
+        size=int(c(5))
+    )
+    ctx.font_small = ImageFont.truetype(
+        pkg_resources.resource_filename(__name__, "OpenSans-CondLight.ttf"),
+        size=int(c(2))
+    )
+
+    return ctx
 
 
 def draw_title(ctx, title):

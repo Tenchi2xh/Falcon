@@ -16,7 +16,7 @@ class MusicBox:
         """
         return set(map(lambda pitch: pitch % 12, self.notes))
 
-    def distance(self, pitch):
+    def distance(self, pitch: int) -> float:
         """
         Returns the distance in octaves from the given pitch
         to the closest matching note in the music box
@@ -24,7 +24,7 @@ class MusicBox:
         closest = self.closest(pitch)
         return abs(closest - pitch) / 12.0
 
-    def closest(self, pitch):
+    def closest(self, pitch: int) -> int:
         """
         Returns the closest matching note in the music box
         """
@@ -33,7 +33,7 @@ class MusicBox:
             return self.closest(pitch + 1)
         return min(available, key=lambda n: abs(n - pitch))
 
-    def reproducible(self, pitches):
+    def reproducible(self, pitches: List[int]) -> bool:
         """
         Returns true if the given list of pitches
         are reproducible with the music box

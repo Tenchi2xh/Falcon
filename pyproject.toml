@@ -20,3 +20,4 @@ mido = "^1.2"
 [tool.poetry.dev-dependencies]
 ptpython = "^0.41.0"
 flake8 = "^3.5"
+mypy = "^0.670.0"
