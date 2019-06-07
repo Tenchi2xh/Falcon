@@ -5,16 +5,23 @@ from .falcon import falcon
 from .punch import punch
 from .boxes import boxes
 
+context_settings = {
+    "help_option_names": ["-h", "--help"],
+    "max_content_width": 120
+}
 
-@click.command()
-@click.option("-d", "--dpi", type=click.IntRange(min=1), default=300)
-@click.option("-b", "--box", type=click.Choice(boxes.keys()), required=True)
-@click.option("-s", "--supersampling", type=click.IntRange(min=1), default=2)
-@click.option("-v", "--verbose", is_flag=True)
-@click.option("--no-midi", is_flag=True)
-@click.option("--horizontal/--vertical", default=True)
+@click.command(context_settings=context_settings)
+@click.option("-d", "--dpi", type=click.IntRange(min=1), default=300, metavar="DPI", help="Image resolution in dots per inch (default: 300).")
+@click.option("-b", "--box", type=click.Choice(boxes.keys()), required=True, help="Model of the music box.")
+@click.option("-s", "--supersampling", type=click.IntRange(min=1), default=2, metavar="SS", help="Supersampling factor (anti-aliasing).")
+@click.option("-v", "--verbose", is_flag=True, help="Output progress of all steps.")
+@click.option("--no-midi", is_flag=True, help="Don't write a MIDI file output.")
+@click.option("--horizontal/--vertical", default=True, help="Rendered punch card orientation.")
 @click.argument("midi_file", type=click.Path(exists=True))
 def cli(dpi, box, supersampling, verbose, no_midi, horizontal, midi_file):
+    """
+    Music box punch card generator
+    """
     box = boxes[box]
     basename = os.path.basename(os.path.splitext(midi_file)[0])
 
