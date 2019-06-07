@@ -4,7 +4,7 @@ version = "2.0.0"
 description = "MIDI to music box punch card converter"
 authors = ["Hamza Haiken <tenchi@team2xh.net>"]
 license = "MIT"
-readme = "README.md"
+# readme = "README.md"
 repository = "https://github.com/Tenchi2xh/Falcon"
 keywords = ["music", "box", "midi"]
 
@@ -21,3 +21,4 @@ mido = "^1.2"
 ptpython = "^0.41.0"
 flake8 = "^3.5"
 mypy = "^0.670.0"
+pytest = "^4.3"
