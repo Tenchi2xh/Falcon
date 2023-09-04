@@ -14,7 +14,7 @@ falcon = "falcon.cli:falcon"
 [tool.poetry.dependencies]
 python = "^3.7"
 click = "^6.7"
-Pillow = "^5.2"
+Pillow = "^9.3"
 mido = "^1.2"
 
 [tool.poetry.dev-dependencies]
